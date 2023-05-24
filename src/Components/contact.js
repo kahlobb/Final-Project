@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-
+// 'Contact' uses 'useState' hook to define 'formData'
+// initial values = ''
 const Contact = () => {
     const [formData, setFormData] = useState({
         firstName: '',
@@ -10,6 +11,11 @@ const Contact = () => {
         phone: '',
     });
 
+    // 'handleInputChange' function
+    //   - called when there is change to form inputs
+    // updates 'formData' state using 'setFormData' function
+    //   - 'setFormData' is used to update the state based on previous state (...formData)
+    //   - sets value of changed inputs using computed property ([name]) and new 'value'
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormData((formData) => ({
@@ -18,6 +24,11 @@ const Contact = () => {
         }));
     };
 
+    // 'handleSubmit' function - called when form is submitted
+    //  - checks if input fields have values in 'formData' state
+    //  - if values are in input fields, it console.log 'formData'
+    //  - then resets form inputs to ''
+    // 'preferredComm' is included to reset radio buttons
     const handleSubmit = (event) => {
         event.preventDefault();
         if(
@@ -41,6 +52,10 @@ const Contact = () => {
         }
     };
 
+    // 'onSubmit' prop is set to 'handleSubmit' function to call function when form <Form> is submitted
+    // each <Form.Group> 'controlId' prop - wraps around <Form.Label> & <Form.Control>
+    // 'name' prop set to field name in 'formData' state
+    // 'value' & 'onChange' props based on corresponding values in 'formData' state
     return (
         <div>
             <h1>Contact Us</h1>
@@ -81,7 +96,7 @@ const Contact = () => {
                         type="text"
                         name="phone"
                         placeholder="123-456-7890"
-                        value={formData.phoneNumber}
+                        value={formData.phone}
                         onChange={handleInputChange}
                         />
                 </Form.Group>

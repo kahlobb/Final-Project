@@ -1,22 +1,32 @@
 import React from 'react';
 import { Button, ButtonGroup, Form, Card, Container } from 'react-bootstrap';
 
+// 'state' object defines initial state of 'ReviewPage'
+// 2 properties = 'reviews' & 'newReview'
+// 'reviews' - array to store review objects
+// 'newReview' - string represents content of new input
 class ReviewPage extends React.Component {
     state = {
         reviews: [],
         newReview: ''
     };
 
+    // 'handleInputChange' = event handler
+    //   - updates 'newReview' property in state whenever review input changes
     handleInputChange = event => {
         this.setState({
             newReview: event.target.value
         });
     };
 
+    // 'handleSubmit' = event handler
+    //   - called when form is submitted
     handleSubmit = event => {
         event.preventDefault();
         const { newReview } = this.state;
 
+        //   - creates a new 'review' object based on 'newReview' content
+        // default properties set for 'agreeCount' & 'disagreeCount'
         const review = {
             id: Date.now(),
             content: newReview,
@@ -24,12 +34,19 @@ class ReviewPage extends React.Component {
             disagreeCount: 0
         };
 
+        // add the new review to the 'reviews' array
+        // resets 'newReview' to ''
         this.setState(prevState => ({
             reviews: [...prevState.reviews, review],
             newReview: ''
         }));
     };
 
+    // 'handleAgree' = event handler
+    // called when Agree button is clicked for specific review
+    // finds review with the matching 'id'
+    // increments 'agreeCount' property
+    // updates
     handleAgree = id => {
         this.setState(prevState => ({
             reviews: prevState.reviews.map(review => {
@@ -41,6 +58,11 @@ class ReviewPage extends React.Component {
         }));
     };
 
+    // // 'handleDisagree' = event handler
+    // called when Disagree button is clicked for specific review
+    // finds review with the matching 'id'
+    // increments 'disagreeCount' property
+    // updates
     handleDisagree = id => {
         this.setState(prevState => ({
             reviews: prevState.reviews.map(review => {
@@ -52,12 +74,33 @@ class ReviewPage extends React.Component {
         }));
     };
 
+    // 'handleDelete' method = event handler
+    // called when Delete button is clicked for specific review
+    // filters out the 'review' with matching 'id' from the 'reviews' array
+    // updates the state
     handleDelete = id => {
         this.setState(prevState => ({
             reviews: prevState.reviews.filter(review => review.id !== id)
         }));
     };
 
+    // destructures the 'reviews' and 'newReview' properties from state
+    // 'onSubmit' prop is set to 'handleSubmit' method - called when form is submitted
+    // <Form.Control> is 'textarea' for review input
+    // 'value' is bound to 'newReview' prop in state
+    // 'onChange' prop set to 'handleInputChange' method
+    
+    /* After Form
+        - conditional rendering based on 'length' of the 'reviews'
+        - If there are 'reviews' they are mapped over ('map' function) and rendered as <Card>
+        - each review has unique 'key' prop = 'review.id'
+        
+        <Card.Text> = review's content 
+        <ButtonGroup> = agree and disagree buttons 
+            - Delete Button is separate though 
+            - Each button has 'onClick' prop set to corresponding methods 
+        
+        If there are no reviews <p> = 'No reviews yet'    */
     render() {
         const { reviews, newReview } = this.state;
 
