@@ -1,32 +1,44 @@
-// Contact Form
-// Submit Button
-// Card with business operations hours and location
-// image? 
 import React, { useState } from 'react';
-import { Route } from 'react-router-dom/cjs/react-router-dom.min';
-//  import { Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
 
-const Contact = () => {
-    console.log('test');
-    return <h1>Contact Us</h1>
-    
-}
-
-export default Contact;
-
-/*
 const Contact = () => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        phoneNumber: '',
+        phone: '',
     });
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setFormData({...formData, [name]: value });
+        setFormData((formData) => ({
+            ...formData,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if(
+            formData.firstName && 
+            formData.lastName && 
+            formData.email && 
+            formData.phone
+        ) {
+            // addNewFormData(formData);
+            console.log('Form submitted:', formData);
+            
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+                preferredComm: '',
+            });
+        } else {
+            console.log('invalid input');
+        }
     };
 
     return (
@@ -38,6 +50,7 @@ const Contact = () => {
                     <Form.Control
                         type="text"
                         name="firstName"
+                        placeholder="John"
                         value={formData.firstName}
                         onChange={handleInputChange}
                         />
@@ -47,6 +60,7 @@ const Contact = () => {
                     <Form.Control
                         type="text"
                         name="lastName"
+                        placeholder="Smith"
                         value={formData.lastName}
                         onChange={handleInputChange}
                         />
@@ -56,16 +70,17 @@ const Contact = () => {
                     <Form.Control
                         type="text"
                         name="email"
+                        placeholder="smith@email.com"
                         value={formData.email}
                         onChange={handleInputChange}
                         />
                 </Form.Group>
-                <Form.Group controlId="phoneNumber">
+                <Form.Group controlId="phone">
                     <Form.Label>Phone Number</Form.Label>
                     <Form.Control
                         type="text"
-                        name="phoneNumber"
-                        placeholder="(000)123-4567"
+                        name="phone"
+                        placeholder="123-456-7890"
                         value={formData.phoneNumber}
                         onChange={handleInputChange}
                         />
@@ -75,23 +90,29 @@ const Contact = () => {
                     <Form.Label>Preferred Mode of Communication</Form.Label>
                     <Form.Check
                         type="radio"
-                        label="email"
+                        label="Email"
                         name="preferredComm"
                         value="email"
+                        checked={formData.preferredComm === 'email'}
                         onChange={handleInputChange}
                     />
                     <Form.Check
                         type="radio"
-                        label="email"
+                        label="Phone"
                         name="preferredComm"
-                        value="email"
+                        value="phone"
+                        checked={formData.preferredComm === 'phone'}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
+
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
             </Form>
         </div>
-    )
-}
-*/
+    );
+};
 
+export default Contact;
 
