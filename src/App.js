@@ -5,7 +5,8 @@ import Home from './Components/home';
 import Contact from './Components/contact';
 import ReviewPage from './Components/reviews';
 // import QB_Logo from './images/QB_Logo.png';
-import { Container, Navbar, Nav } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
+import NavBar from './Components/nav-bar';
 import {
   BrowserRouter as Router,
   Switch,
@@ -19,13 +20,9 @@ export default function App() {
   return (
     <Container>
       <Router>
-        <Navbar bg="light" variant="light" expand="lg">
-        <Navbar.Brand as={Link} to="/">QB Custom</Navbar.Brand>
-          <Nav className="navbar"></Nav>
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/reviews">Reviews</Nav.Link>
-            <Nav.Link as={Link} to="/contact">Contact Us</Nav.Link>
-        </Navbar>
+        <NavBar />
+
+
             <Switch>
               <Route exact path="/">
                 <Home />

@@ -1,21 +1,36 @@
 import React from 'react';
-import { Button, ButtonGroup, Form, Card, Container } from 'react-bootstrap';
+import { Button, ButtonGroup, Card, Container } from 'react-bootstrap';
+import EditModal from './edit-modal';
+import ReviewForm from './form-group';
 
 // 'state' object defines initial state of 'ReviewPage'
 // 2 properties = 'reviews' & 'newReview'
 // 'reviews' - array to store review objects
 // 'newReview' - string represents content of new input
 class ReviewPage extends React.Component {
-    state = {
-        reviews: [],
-        newReview: ''
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            reviews: [],
+            newReview: '',
+            clientName: '',
+            printingMethod: 'screen printing',
+            activeReviewId: null
+        };
+    }
 
     // 'handleInputChange' = event handler
     //   - updates 'newReview' property in state whenever review input changes
     handleInputChange = event => {
+        const { name, value } = event.target;
         this.setState({
-            newReview: event.target.value
+            [name]: value
+        });
+    };
+
+    handlePrintingMethodChange = selectedMethod => {
+        this.setState({
+            printingMethod: selectedMethod
         });
     };
 
@@ -23,13 +38,16 @@ class ReviewPage extends React.Component {
     //   - called when form is submitted
     handleSubmit = event => {
         event.preventDefault();
-        const { newReview } = this.state;
+        const { newReview, clientName, printingMethod } = this.state;
+
 
         //   - creates a new 'review' object based on 'newReview' content
         // default properties set for 'agreeCount' & 'disagreeCount'
         const review = {
             id: Date.now(),
             content: newReview,
+            clientName,
+            printingMethod,
             agreeCount: 0,
             disagreeCount: 0
         };
@@ -38,7 +56,9 @@ class ReviewPage extends React.Component {
         // resets 'newReview' to ''
         this.setState(prevState => ({
             reviews: [...prevState.reviews, review],
-            newReview: ''
+            newReview: '',
+            clientName: '',
+            printingMethod: 'screen printing'
         }));
     };
 
@@ -84,6 +104,43 @@ class ReviewPage extends React.Component {
         }));
     };
 
+    handleEdit = (id, updatedClientName, updatedContent) => {
+        this.setState(prevState => ({
+            reviews: prevState.reviews.map(review => {
+                if(review.id === id) {
+                    return {
+                        ...review,
+                        clientName: updatedClientName,
+                        content: updatedContent
+                    };
+                }
+                return review;
+            })
+        }));
+    };
+
+    handleUpdate = () => {
+        const { activeReviewId, clientName, newReview, reviews } = this.state;
+        const updatedReviews = reviews.map(review => {
+            if(review.id === activeReviewId) {
+                return {
+                    ...review,
+                    clientName,
+                    content: newReview
+                };
+            }
+            return review;
+        });
+
+        this.setState({
+            reviews: updatedReviews,
+            activeReviewId: null,
+            clientName: '',
+            newReview: ''
+        });
+    };
+
+
     // destructures the 'reviews' and 'newReview' properties from state
     // 'onSubmit' prop is set to 'handleSubmit' method - called when form is submitted
     // <Form.Control> is 'textarea' for review input
@@ -102,29 +159,25 @@ class ReviewPage extends React.Component {
         
         If there are no reviews <p> = 'No reviews yet'    */
     render() {
-        const { reviews, newReview } = this.state;
+        const { reviews, content, clientName, printingMethod } = this.state;
 
         return (
             <Container>
                 <h1>Reviews</h1>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Group controlId="reviewForm">
-                        <Form.Control
-                            as="textarea"
-                            rows={3}
-                            value={newReview}
-                            onChange={this.handleInputChange}
-                            placeholder="Write your review..."
-                            />
-                    </Form.Group>
-                    <Button variant="primary" type="submit">
-                        Submit Review
-                    </Button>
-                </Form>
+                <ReviewForm 
+                    clientName={clientName}
+                    printingMethod={printingMethod}
+                    newReview={content}
+                    handleInputChange={this.handleInputChange}
+                    handlePrintingMethodChange={this.handlePrintingMethodChange}
+                    handleSubmit={this.handleSubmit}
+                />
                 {reviews.length > 0 ? (
                     reviews.map(review => (
                         <Card key={review.id} className="my-4">
                             <Card.Body>
+                                <Card.Title>{review.clientName}</Card.Title>
+                                <Card.Subtitle className="mb-2 text-muted">{review.printingMethod}</Card.Subtitle>
                                 <Card.Text>{review.content}</Card.Text>
                                 <ButtonGroup className="mr-2" aria-label="Review Feedback">
                                     <Button variant="success" onClick={() => this.handleAgree(review.id)}>
@@ -137,11 +190,17 @@ class ReviewPage extends React.Component {
                                 <Button variant="outline-danger" onClick={() => this.handleDelete(review.id)}>
                                     Delete
                                 </Button>
+                                <EditModal
+                                    reviewId={review.id}
+                                    clientName={review.clientName}
+                                    content={review.content}
+                                    handleEdit={this.handleEdit}
+                                />
                             </Card.Body>
                         </Card>
                     ))
                 ) : (
-                    <p>No reviews yet.</p>
+                    <p>No reviews yet</p>
                 )}
             </Container>
         );
@@ -149,3 +208,9 @@ class ReviewPage extends React.Component {
 }
 
 export default ReviewPage;
+
+
+// For my 'reviews.js' page...
+// I'm happy with my code and it's all working exactly as it should. However, I would like to add a couple things... I want to add an updateChange() method in order to fulfill all the CRUD operations requirement for the project. 
+
+// Need to figure out why initial comment won't stick
