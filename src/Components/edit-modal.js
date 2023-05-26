@@ -1,25 +1,33 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const EditModal = ({ reviewId, clientName, content, handleEdit }) => {
+
+// 'EditModal' props = 'reviewId', 'clientName', 'addReview', 'handleEdit'
+// 'useState' hook is used to define and manage state variables
+// 'showModal' & 'setShowModal' are used to control visibility of modal
+const EditModal = ({ reviewId, clientName, addReview, handleEdit }) => {
   const [updatedClientName, setUpdatedClientName] = useState(clientName);
-  const [updatedContent, setUpdatedContent] = useState(content);
+  const [updatedContent, setUpdatedContent] = useState(addReview);
   const [showModal, setShowModal] = useState(false);
 
+  // called when the 'edit' button is clicked
   const handleModalOpen = () => {
     setShowModal(true);
   };
 
+  // called when teh modal is closed
   const handleModalClose = () => {
     setShowModal(false);
   };
 
+  // called when 'save' button is clicked
+  // 'handleEdit' is passed as prop - 
+  // arguments = updated values of 'reviewId', 'updatedClientName' & 'updatedContent' 
+  // then closes modal after changes have been saved
   const handleSaveChanges = () => {
-    // Perform any validation if needed
-    // Call handleEdit with the updated values
-    handleEdit(reviewId, updatedClientName, updatedContent);
+    
+    handleEdit( reviewId, updatedClientName, updatedContent);
 
-    // Close the modal
     handleModalClose();
   };
 
@@ -42,7 +50,7 @@ const EditModal = ({ reviewId, clientName, content, handleEdit }) => {
               onChange={e => setUpdatedClientName(e.target.value)}
             />
           </Form.Group>
-          <Form.Group controlId="reviewContent">
+          <Form.Group controlId="content">
             <Form.Label>Review Content</Form.Label>
             <Form.Control
               as="textarea"

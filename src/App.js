@@ -4,7 +4,6 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Home from './Components/home';
 import Contact from './Components/contact';
 import ReviewPage from './Components/reviews';
-// import QB_Logo from './images/QB_Logo.png';
 import { Container } from 'react-bootstrap';
 import NavBar from './Components/nav-bar';
 import {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
 import HomeCarousel from './home-carousel';
 import HomeTable from './home-table';
 

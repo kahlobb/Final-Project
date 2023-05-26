@@ -22,7 +22,7 @@ const ReviewForm = ({ clientName, printingMethod, content, handleInputChange, ha
                             setPrintingMethod={handlePrintingMethodChange}
                         />
                     </Form.Group>
-                    <Form.Group controlId="reviewForm">
+                    <Form.Group controlId="addReview">
                         <Form.Label>Review</Form.Label>
                         <Form.Control
                             as="textarea"
@@ -40,3 +40,5 @@ const ReviewForm = ({ clientName, printingMethod, content, handleInputChange, ha
 };
 
 export default ReviewForm;
+
+// changed controlId="reviewContent" (?) changed to 'content'
